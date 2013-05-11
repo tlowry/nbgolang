@@ -49,7 +49,7 @@ public class AntlrTokenReader {
      */
     public List<GolangTokenId> readTokenFile() {
         ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
-        InputStream inp = classLoader.getResourceAsStream("com/github/tlowry/nbgolang/syntaxHighlighting/antlr/golang.tokens");
+        InputStream inp = classLoader.getResourceAsStream("com/github/tlowry/nbgolang/Editor/antlr/golang.tokens");
         BufferedReader input = new BufferedReader(new InputStreamReader(inp));
         readTokenFile(input);
         return tokens;

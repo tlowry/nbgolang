@@ -1,6 +1,6 @@
 Manifest-Version: 1.0
 OpenIDE-Module: com.github.tlowry.nbgolang.tools
-OpenIDE-Module-Layer: com/github/tlowry/nbgolang/tools/layer.xml
+OpenIDE-Module-Layer: com/github/tlowry/nbgolang/tools/files/layer.xml
 OpenIDE-Module-Localizing-Bundle: com/github/tlowry/nbgolang/tools/files/Bundle.properties
 OpenIDE-Module-Specification-Version: 1.0
 
