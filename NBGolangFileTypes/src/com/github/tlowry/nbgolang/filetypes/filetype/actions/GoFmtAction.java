@@ -2,8 +2,9 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.github.tlowry.nbgolang.filetypes.filetype;
+package com.github.tlowry.nbgolang.filetypes.filetype.actions;
 
+import com.github.tlowry.nbgolang.filetypes.filetype.GolangDataObject;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List;
@@ -23,11 +24,11 @@ import org.openide.util.NbBundle.Messages;
         category = "Build",
         id = "com.github.tlowry.nbgolang.filetypes.filetype.GoFmtAction")
 @ActionRegistration(
-        iconBase = "com/github/tlowry/nbgolang/filetypes/filetype/fmt.png",
+        iconBase = "com/github/tlowry/nbgolang/filetypes/resources/fmt.png",
         displayName = "#CTL_GoFmtAction")
 @ActionReferences({
-    @ActionReference(path = "Loaders/text/x-go/Actions", position = -200),
-    @ActionReference(path = "Editors/text/x-go/Popup", position = 765)
+    @ActionReference(path = "Loaders/text/x-go/Actions", position = 200),
+    @ActionReference(path = "Editors/text/x-go/Popup", position = 10000)
 })
 @Messages("CTL_GoFmtAction=gofmt")
 public final class GoFmtAction implements ActionListener {

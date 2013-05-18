@@ -4,7 +4,7 @@
  */
 package com.github.tlowry.nbgolang.filetypes.filetype;
 
-import com.github.tlowry.nbgolang.filetypes.Globals;
+import com.github.tlowry.nbgolang.core.Globals;
 import java.io.IOException;
 import org.netbeans.core.spi.multiview.MultiViewElement;
 import org.netbeans.core.spi.multiview.text.MultiViewEditorElement;
@@ -30,7 +30,7 @@ import org.openide.windows.TopComponent;
         extension = {"go"})
 @DataObject.Registration(
         mimeType = Globals.GOLANG_MIME_TYPE,
-        iconBase = "com/github/tlowry/nbgolang/filetypes/filetype/gophercolor-16.png",
+        iconBase = "com/github/tlowry/nbgolang/filetypes/resources/gophercolor-16.png",
         displayName = "#LBL_Golang_LOADER",
         position = 300)
 @ActionReferences({
@@ -99,7 +99,7 @@ public class GolangDataObject extends MultiDataObject {
 
     @MultiViewElement.Registration(
             displayName = "#LBL_Golang_EDITOR",
-            iconBase = "com/github/tlowry/nbgolang/filetypes/filetype/gophercolor-16.png",
+            iconBase = "com/github/tlowry/nbgolang/filetypes/resources/gophercolor-16.png",
             mimeType = Globals.GOLANG_MIME_TYPE,
             persistenceType = TopComponent.PERSISTENCE_ONLY_OPENED,
             preferredID = "Golang",

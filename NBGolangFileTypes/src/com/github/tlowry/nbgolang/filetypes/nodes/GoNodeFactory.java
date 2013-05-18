@@ -4,7 +4,7 @@
  */
 package com.github.tlowry.nbgolang.filetypes.nodes;
 
-import com.github.tlowry.nbgolang.filetypes.Globals;
+import com.github.tlowry.nbgolang.core.Globals;
 import com.github.tlowry.nbgolang.filetypes.project.GolangProject;
 import java.util.ArrayList;
 import java.util.Enumeration;

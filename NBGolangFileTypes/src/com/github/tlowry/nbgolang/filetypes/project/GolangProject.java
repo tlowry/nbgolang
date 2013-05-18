@@ -5,8 +5,17 @@
 package com.github.tlowry.nbgolang.filetypes.project;
 
 import com.github.tlowry.nbgolang.filetypes.customizer.GolangCustomizerProvider;
+import com.github.tlowry.nbgolang.filetypes.filetype.actions.GoBuildCallable;
+import com.github.tlowry.nbgolang.filetypes.filetype.actions.GoBuilder;
+import com.github.tlowry.nbgolang.filetypes.filetype.actions.GoInstaller;
+import com.sun.jmx.snmp.Enumerated;
 import java.awt.Image;
 import java.beans.PropertyChangeListener;
+import java.util.ArrayList;
+import java.util.Enumeration;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Queue;
 import javax.swing.Action;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
@@ -68,7 +77,7 @@ public class GolangProject implements Project {
     private final class Info implements ProjectInformation {
 
         @StaticResource()
-        public static final String GOPHER_ICON_24 = "com/github/tlowry/nbgolang/filetypes/project/gophercolor.png";
+        public static final String GOPHER_ICON_24 = "com/github/tlowry/nbgolang/filetypes/resources/gophercolor.png";
 
         @Override
         public Icon getIcon() {
@@ -104,7 +113,7 @@ public class GolangProject implements Project {
     class GolangProjectLogicalView implements LogicalViewProvider {
 
         @StaticResource()
-        public static final String GOPHER_ICON_24 = "com/github/tlowry/nbgolang/filetypes/project/gophercolor.png";
+        public static final String GOPHER_ICON_24 = "com/github/tlowry/nbgolang/filetypes/resources/gophercolor.png";
         private final GolangProject project;
 
         public GolangProjectLogicalView(GolangProject project) {
@@ -225,9 +234,11 @@ public class GolangProject implements Project {
             } else if (ActionProvider.COMMAND_PROFILE_SINGLE.equalsIgnoreCase(action)) {
             } else if (ActionProvider.COMMAND_PROFILE_TEST_SINGLE.equalsIgnoreCase(action)) {
             } else if (ActionProvider.COMMAND_REBUILD.equalsIgnoreCase(action)) {
+                this.doRebuild(lookup);
             } else if (ActionProvider.COMMAND_RENAME.equalsIgnoreCase(action)) {
             } else if (ActionProvider.COMMAND_RUN.equalsIgnoreCase(action)) {
-               //GolangProject.this.getProjectDirectory()
+                //GolangProject.this.getProjectDirectory()
+                this.doRun(lookup);
             } else if (ActionProvider.COMMAND_RUN_SINGLE.equalsIgnoreCase(action)) {
             } else if (ActionProvider.COMMAND_TEST.equalsIgnoreCase(action)) {
             } else if (ActionProvider.COMMAND_TEST_SINGLE.equalsIgnoreCase(action)) {
@@ -257,6 +268,87 @@ public class GolangProject implements Project {
             } else if (ActionProvider.COMMAND_TEST_SINGLE.equalsIgnoreCase(command)) {
             }
             return true;
+        }
+
+        private void doRebuild(Lookup lookup) {
+            String projectPath = projectDir.getPath();
+            List<String> packageNames = getPackageList(projectDir);
+            
+            GoInstaller installer = new GoInstaller(projectPath);
+            installer.install(packageNames);
+            
+            GoBuilder builder = new GoBuilder(projectPath);
+            builder.build(packageNames);
+        }
+
+        private List<String> getPackageList(FileObject projectDir) {
+            ArrayList<String> packageList = new ArrayList<String>(5);
+            FileObject src = getDirByName(projectDir, "src");
+            searchPackages(src, packageList);
+            return packageList;
+        }
+
+        /*
+         * Breadth First search for packages
+         */
+        public void searchPackages(FileObject root, ArrayList<String> packageList) {
+            Queue<FileObject> queue = new LinkedList<FileObject>();
+            if (root == null) {
+                return;
+            }
+            queue.clear();
+            queue.add(root);
+            while (!queue.isEmpty()) {
+                FileObject nextDir = queue.remove();
+                Enumeration filesUnderDir = nextDir.getChildren(false);
+                boolean foundPackage = false;
+                while (filesUnderDir.hasMoreElements()) {
+                    FileObject file = (FileObject) filesUnderDir.nextElement();
+                    if (file.hasExt("go")) {
+                        //found a package
+                        foundPackage = true;
+                    }
+                }
+                
+                if (foundPackage) {
+                    // stop searching this branch & save package name
+                    String fullPath = nextDir.getPath();
+                    String [] splitPaths = fullPath.split("src/");
+                    String packageName = "";
+                    
+                    // Take the relative path component
+                    if(splitPaths.length > 1 && splitPaths[1] != null){
+                        packageName = splitPaths[1];
+                    }
+                    packageList.add(packageName);
+                    
+                } else {
+                    // Could be deeper in this branch, keep going
+                    Enumeration x = root.getFolders(true);
+                    while (x.hasMoreElements()) {
+                        queue.add((FileObject) x.nextElement());
+                    }
+                }
+
+            }
+
+        }
+
+        private FileObject getDirByName(FileObject root, String name) {
+            FileObject srcDir = null;
+            Enumeration x = root.getFolders(true);
+            while (x.hasMoreElements()) {
+                FileObject f = (FileObject) x.nextElement();
+                if (f.getName().equals(name)) {
+                    srcDir = f;
+                    break;
+                }
+            }
+            return srcDir;
+        }
+
+        private void doRun(Lookup lookup) {
+            throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
         }
     }
 }

@@ -4,7 +4,7 @@
  */
 package com.github.tlowry.nbgolang.filetypes.filetype;
 
-import com.github.tlowry.nbgolang.filetypes.Globals;
+import com.github.tlowry.nbgolang.core.Globals;
 import javax.swing.Action;
 import javax.swing.JComponent;
 import javax.swing.JPanel;
@@ -19,7 +19,7 @@ import org.openide.windows.TopComponent;
 
 @MultiViewElement.Registration(
         displayName = "#LBL_Golang_VISUAL",
-        iconBase = "com/github/tlowry/nbgolang/filetypes/filetype/gophercolor-16.png",
+        iconBase = "com/github/tlowry/nbgolang/filetypes/resources/gophercolor-16.png",
         mimeType = Globals.GOLANG_MIME_TYPE,
         persistenceType = TopComponent.PERSISTENCE_NEVER,
         preferredID = "GolangVisual",

@@ -4,12 +4,12 @@
     <folder name="Editors">
         <folder name="text">
             <folder name="x-cm">
-                <attr name="displayName" bundlevalue="com.github.tlowry.nbgolang.tools.Bundle#OpenIDE-Module-Name"/>
+                <attr name="displayName" bundlevalue="com.github.tlowry.nbgolang.tools.files.Bundle#OpenIDE-Module-Name"/>
                 <folder name="FontsColors">
                     <folder name="NetBeans">
                         <folder name="Defaults">
                             <file name="SyntaxColors.xml">
-                                <attr name="displayName" bundlevalue="com.github.tlowry.nbgolang.tools.Bundle#Editors/text/x-cm/FontsColors/NetBeans/Defaults/SyntaxColors.xml"/>
+                                <attr name="displayName" bundlevalue="com.github.tlowry.nbgolang.tools.Bundle#Editors/text/x-go/FontsColors/NetBeans/Defaults/SyntaxColors.xml"/>
                             </file>
                         </folder>
                     </folder>
