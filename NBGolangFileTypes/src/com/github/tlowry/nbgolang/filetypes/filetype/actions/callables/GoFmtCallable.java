@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.github.tlowry.nbgolang.filetypes.filetype.actions;
+package com.github.tlowry.nbgolang.filetypes.filetype.actions.callables;
 
 import java.util.concurrent.Callable;
 

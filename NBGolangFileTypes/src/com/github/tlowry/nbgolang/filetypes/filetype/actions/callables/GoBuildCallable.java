@@ -2,31 +2,30 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.github.tlowry.nbgolang.filetypes.filetype.actions;
+package com.github.tlowry.nbgolang.filetypes.filetype.actions.callables;
 
 import com.github.tlowry.nbgolang.core.Globals;
 import java.util.Map;
-import java.util.concurrent.Callable;
+import org.openide.filesystems.FileObject;
 
 /**
  *
  * @author tony
  */
-public class GoBuildCallable implements Callable<Object> {
+public class GoBuildCallable extends GolangCallable {
 
-    private final String projectDir;
     private final String packageName;
 
-    public GoBuildCallable(String projectDir, String packageName) {
-        this.projectDir = projectDir;
+    public GoBuildCallable(FileObject projectDir, String packageName) {
+        super(projectDir);
         this.packageName = packageName;
 
     }
 
     @Override
-    public Object call() throws Exception {
+    public Process call() throws Exception {
         ProcessBuilder b = new ProcessBuilder("go", "build", packageName);
-        setGoPath(b, projectDir);
+        setGoPath(b, projectDir.getPath());
         return b.start();
     }
 

@@ -44,7 +44,7 @@ public class GoNodeFactory implements NodeFactory {
 
         @Override
         public List<Node> keys() {
-            Enumeration<? extends FileObject> en = project.getProjectDirectory().getFolders(true);
+            Enumeration<? extends FileObject> en = project.getProjectDirectory().getFolders(false);
             List<Node> result = new ArrayList<Node>();
             while (en.hasMoreElements()) {
                 FileObject folder = (FileObject) en.nextElement();

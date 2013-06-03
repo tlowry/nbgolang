@@ -5,12 +5,12 @@
 package com.github.tlowry.nbgolang.filetypes.project;
 
 import com.github.tlowry.nbgolang.filetypes.customizer.GolangCustomizerProvider;
-import com.github.tlowry.nbgolang.filetypes.filetype.actions.GoBuildCallable;
 import com.github.tlowry.nbgolang.filetypes.filetype.actions.GoBuilder;
 import com.github.tlowry.nbgolang.filetypes.filetype.actions.GoInstaller;
-import com.sun.jmx.snmp.Enumerated;
+import com.github.tlowry.nbgolang.filetypes.filetype.actions.Runner;
 import java.awt.Image;
 import java.beans.PropertyChangeListener;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.LinkedList;
@@ -49,10 +49,13 @@ public class GolangProject implements Project {
     private final FileObject projectDir;
     private final ProjectState state;
     private Lookup lkp;
+    private String mainPkgName;
 
     public GolangProject(FileObject dir, ProjectState state) {
         this.projectDir = dir;
         this.state = state;
+        this.mainPkgName = "";
+        
     }
 
     @Override
@@ -126,6 +129,7 @@ public class GolangProject implements Project {
                 //Obtain the project directory's node:
                 FileObject projectDirectory = project.getProjectDirectory();
                 DataFolder projectFolder = DataFolder.findFolder(projectDirectory);
+                
                 Node nodeOfProjectFolder = projectFolder.getNodeDelegate();
                 //Decorate the project directory's node:
                 return new ProjectNode(nodeOfProjectFolder, project);
@@ -249,6 +253,7 @@ public class GolangProject implements Project {
         public boolean isActionEnabled(String command, Lookup lookup) throws IllegalArgumentException {
             if (ActionProvider.COMMAND_BUILD.equalsIgnoreCase(command)) {
             } else if (ActionProvider.COMMAND_CLEAN.equalsIgnoreCase(command)) {
+                doClean(lookup);
             } else if (ActionProvider.COMMAND_COMPILE_SINGLE.equalsIgnoreCase(command)) {
             } else if (ActionProvider.COMMAND_COPY.equalsIgnoreCase(command)) {
             } else if (ActionProvider.COMMAND_DEBUG.equalsIgnoreCase(command)) {
@@ -263,6 +268,7 @@ public class GolangProject implements Project {
             } else if (ActionProvider.COMMAND_REBUILD.equalsIgnoreCase(command)) {
             } else if (ActionProvider.COMMAND_RENAME.equalsIgnoreCase(command)) {
             } else if (ActionProvider.COMMAND_RUN.equalsIgnoreCase(command)) {
+                doRun(lookup);
             } else if (ActionProvider.COMMAND_RUN_SINGLE.equalsIgnoreCase(command)) {
             } else if (ActionProvider.COMMAND_TEST.equalsIgnoreCase(command)) {
             } else if (ActionProvider.COMMAND_TEST_SINGLE.equalsIgnoreCase(command)) {
@@ -271,14 +277,19 @@ public class GolangProject implements Project {
         }
 
         private void doRebuild(Lookup lookup) {
-            String projectPath = projectDir.getPath();
             List<String> packageNames = getPackageList(projectDir);
             
-            GoInstaller installer = new GoInstaller(projectPath);
+            GoInstaller installer = new GoInstaller(projectDir);
             installer.install(packageNames);
             
-            GoBuilder builder = new GoBuilder(projectPath);
+            GoBuilder builder = new GoBuilder(projectDir);
             builder.build(packageNames);
+        }
+        
+        private void doRun(Lookup lookup){
+            Runner r = new Runner(projectDir);
+            r.run();
+            
         }
 
         private List<String> getPackageList(FileObject projectDir) {
@@ -347,8 +358,22 @@ public class GolangProject implements Project {
             return srcDir;
         }
 
-        private void doRun(Lookup lookup) {
-            throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        private void doClean(Lookup lookup) {
+            try{
+                
+            
+            FileObject binDir = projectDir.getFileObject("bin");
+            for(FileObject f : binDir.getChildren()){
+                f.delete();
+            }
+            FileObject pkgDir = projectDir.getFileObject("bin");
+            for(FileObject fl : pkgDir.getChildren()){
+                fl.delete();
+            }
+            }
+            catch(IOException ex){
+                
+            }
         }
     }
 }

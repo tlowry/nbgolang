@@ -4,6 +4,7 @@
  */
 package com.github.tlowry.nbgolang.filetypes.filetype.actions;
 
+import com.github.tlowry.nbgolang.filetypes.filetype.actions.callables.GoFmtCallable;
 import com.github.tlowry.nbgolang.filetypes.filetype.GolangDataObject;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -58,8 +59,7 @@ public final class GoFmtAction implements ActionListener {
         } catch (ExecutionException ex) {
             Exceptions.printStackTrace(ex);
         }
-        
-        
+
     }
 
     public Integer execute(String filesToFmt) throws InterruptedException, ExecutionException {
